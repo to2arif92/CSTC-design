@@ -6,12 +6,13 @@
     "jquery": "^3.2.1",
     "animate.css": "^3.5.2",
     "font-awesome": "fontawesome#^4.7.0",
-    "jquery-backstretch": "^2.1.16"
+    "jquery-backstretch": "^2.1.16",
+    "jquery-migrate-official": "^3.0.0"
   },
   "install": {
     "base": "lib",
     "options": {
-      "includePackageNameInInstallPath": true
+      "includePackageNameInInstallPath": false
     },
     "path": {
       "js": "js",
@@ -53,6 +54,13 @@
           },
           {
             "bower-components/font-awesome/css/font-awesome.css": "font-awesome.css"
+          }
+        ]
+      },
+      "jquery-migrate-official": {
+        "mapping": [
+          {
+            "bower-components/jquery-migrate-official/build/release.js": "jquery-migrate.js"
           }
         ]
       }
