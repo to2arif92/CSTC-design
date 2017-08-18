@@ -11,7 +11,7 @@ var cache = require('gulp-cache');
 
 // Concatenate(combine) & Minify JS Files
 gulp.task('scripts', function () {
-    return gulp.src('lib/**/*.js')
+    return gulp.src('src/**/*.js')
         .pipe(concat('main.js'))
         .pipe(rename({
             suffix: '.min'
@@ -22,7 +22,7 @@ gulp.task('scripts', function () {
 
 // Concatenate & Minify CSS Files
 gulp.task('styles', function () {
-    return gulp.src('lib/css/**/*.css')
+    return gulp.src('src/css/**/*.css')
         .pipe(concat('main.css'))
         .pipe(rename({
             suffix: '.min'
@@ -44,18 +44,18 @@ gulp.task('images', function () {
 
 // Copy Fonts
 gulp.task('fonts', function () {
-    return gulp.src('lib/fonts/**/*')
+    return gulp.src('src/fonts/**/*')
         .pipe(gulp.dest('build/fonts'))
 });
 
 // ??
 gulp.task('watch', function () {
     // Watch .js files
-    gulp.watch('lib/js/**/*.js', ['scripts']);
+    gulp.watch('src/js/**/*.js', ['scripts']);
     // Watch .scss files
-    gulp.watch('lib/css/*.css', ['styles']);
+    gulp.watch('src/css/*.css', ['styles']);
     // Watch image files
-    gulp.watch('images/**/*', ['images']);
+    gulp.watch('src/img/**/*', ['images']);
 });
 
 // Default Task

@@ -10,7 +10,7 @@
     "jquery-migrate-official": "^3.0.0"
   },
   "install": {
-    "base": "lib",
+    "base": "src",
     "options": {
       "includePackageNameInInstallPath": false
     },
