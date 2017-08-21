@@ -21,10 +21,7 @@ gulp.task('scripts', function () {
 		// added manually to keep the order intect i.e. jQuery>Bootstrap
 		js + 'jquery.js',
 		js + 'jquery-migrate.js',
-		js + 'bootstrap.js',
-        js + 'jquery.backstretch.js',
-        js + 'jquery.waypoints.js',
-        js + 'scripts.js'
+		js + '*.js'
     ])
         .pipe(concat('bundle.js'))
         .pipe(rename({
@@ -72,14 +69,18 @@ gulp.task('html', function () {
         }))
         .pipe(htmlmin({
             collapseWhitespace: true,
-        decodeEntities: true,
-        preserveLineBreaks: false,
-        removeComments: true
+            decodeEntities: true,
+            preserveLineBreaks: false,
+            removeComments: true,
+            removeEmptyAttributes: true,
+            removeAttributeQuotes: true,
+            collapseBooleanAttributes: true
         }))
         .pipe(gulp.dest('build/'));
 });
 
-// ??
+// Run task automatically on file Modification;
+// start by 'gulp watch' & stop by 'Ctrl+C'
 gulp.task('watch', function () {
     // Watch .js files
     gulp.watch('src/js/**/*.js', ['scripts']);
@@ -87,6 +88,8 @@ gulp.task('watch', function () {
     gulp.watch('src/css/*.css', ['styles']);
     // Watch image files
     gulp.watch('src/img/**/*', ['images']);
+    // Watch html files
+    gulp.watch('src/*.html', ['html']);
 });
 
 // Default Task
