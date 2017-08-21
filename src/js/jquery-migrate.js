@@ -1,308 +1,540 @@
-/*
- * JQuery Migrate Plugin Release Management
+/*!
+ * jQuery Migrate - v3.0.0 - 2016-06-09
+ * Copyright jQuery Foundation and other contributors
  */
+(function( jQuery, window ) {
+    "use strict";
 
-// Debugging variables
-var	dryrun = false,
-	skipRemote = false;
 
-var fs = require( "fs" ),
-	child = require( "child_process" ),
-	path = require( "path" ),
-	chalk = require( "chalk" );
+    jQuery.migrateVersion = "3.0.0";
 
-var releaseVersion,
-	nextVersion,
-	finalFiles,
-	isBeta,
-	pkg,
 
-	repoURL = "git@github.com:jquery/jquery-migrate.git",
-	branch = "master",
+    ( function() {
 
-	// Windows needs the .cmd version but will find the non-.cmd
-	// On Windows, also ensure the HOME environment variable is set
-	gruntCmd = process.platform === "win32" ? "grunt.cmd" : "grunt",
-	npmCmd = process.platform == "win32" ? "npm.cmd" : "npm",
+        // Support: IE9 only
+        // IE9 only creates console object when dev tools are first opened
+        // Also, avoid Function#bind here to simplify PhantomJS usage
+        var log = window.console && window.console.log &&
+                function() { window.console.log.apply( window.console, arguments ); },
+            rbadVersions = /^[12]\./;
 
-	readmeFile = "README.md",
-	packageFile = "package.json",
-	versionFile = "src/version.js",
-	devFile = "dist/jquery-migrate.js",
-	minFile = "dist/jquery-migrate.min.js",
+        if ( !log ) {
+            return;
+        }
 
-	releaseFiles = {
-		"CDN/jquery-migrate-VER.js": devFile,
-		"CDN/jquery-migrate-VER.min.js": minFile
-	};
+        // Need jQuery 3.0.0+ and no older Migrate loaded
+        if ( !jQuery || rbadVersions.test( jQuery.fn.jquery ) ) {
+            log( "JQMIGRATE: jQuery 3.0.0+ REQUIRED" );
+        }
+        if ( jQuery.migrateWarnings ) {
+            log( "JQMIGRATE: Migrate plugin loaded multiple times" );
+        }
 
-steps(
-	initialize,
-	checkGitStatus,
-	gruntBuild,
-	updateVersions,
-	tagReleaseVersion,
-	gruntBuild,
-	makeReleaseCopies,
-	publishToNPM,
-	setNextVersion,
-	pushToRemote,
-	remindAboutCDN,
-	remindAboutSites,
-	exit
-);
+        // Show a message on the console so devs know we're active
+        log( "JQMIGRATE: Migrate is installed" +
+            ( jQuery.migrateMute ? "" : " with logging active" ) +
+            ", version " + jQuery.migrateVersion );
 
-function initialize( next ) {
+    } )();
 
-	// -d dryrun mode, no commands are executed at all
-	if ( process.argv[ 2 ] === "-d" ) {
-		process.argv.shift();
-		dryrun = true;
-		console.warn( "=== DRY RUN MODE ===" );
-	}
+    var warnedAbout = {};
 
-	// -r skip remote mode, no remote commands are executed
-	// (git push, npm publish, cdn copy)
-	// Reset with `git reset --hard HEAD~2 && git tag -d (version) && grunt`
-	if ( process.argv[ 2 ] === "-r" ) {
-		process.argv.shift();
-		skipRemote = true;
-		console.warn( "=== SKIPREMOTE MODE ===" );
-	}
+// List of warnings already given; public read only
+    jQuery.migrateWarnings = [];
 
-	// First arg should be the version number being released; this is a proper subset
-	// of a full semver, see https://github.com/mojombo/semver/issues/32
-	// Examples: 1.0.1, 1.0.1-pre, 1.0.1-rc1, 1.0.1-rc1.1
-	var newver, oldver,
-		rsemver = /^(\d+)\.(\d+)\.(\d+)(?:-([\dA-Za-z\-]+(?:\.[\dA-Za-z\-]+)*))?$/,
-		version = rsemver.exec( process.argv[ 2 ] || "" ) || [],
-		major = version[ 1 ],
-		minor = version[ 2 ],
-		patch = version[ 3 ],
-		xbeta = version[ 4 ];
+// Set to false to disable traces that appear with warnings
+    if ( jQuery.migrateTrace === undefined ) {
+        jQuery.migrateTrace = true;
+    }
 
-	releaseVersion = process.argv[ 2 ];
-	isBeta = !!xbeta;
+// Forget any warnings we've already given; public
+    jQuery.migrateReset = function() {
+        warnedAbout = {};
+        jQuery.migrateWarnings.length = 0;
+    };
 
-	if ( !releaseVersion ) {
-		log( "Usage: release [ -d -r ] releaseVersion" );
-		log( "       -d  Dry-run; no commands are executed at all" );
-		log( "       -r  Skip-remote; nothing is pushed externally" );
-		die( "Invalid args" );
-	}
-	if ( !version.length ) {
-		die( "'" + releaseVersion + "' is not a valid semver!" );
-	}
-	if ( xbeta === "pre" ) {
-		die( "Cannot release a 'pre' version!" );
-	}
-	if ( !( fs.existsSync || path.existsSync )( packageFile ) ) {
-		die( "No " + packageFile + " in this directory" );
-	}
-	pkg = JSON.parse( fs.readFileSync( packageFile ) );
+    function migrateWarn( msg ) {
+        var console = window.console;
+        if ( !warnedAbout[ msg ] ) {
+            warnedAbout[ msg ] = true;
+            jQuery.migrateWarnings.push( msg );
+            if ( console && console.warn && !jQuery.migrateMute ) {
+                console.warn( "JQMIGRATE: " + msg );
+                if ( jQuery.migrateTrace && console.trace ) {
+                    console.trace();
+                }
+            }
+        }
+    }
 
-	status( "Current version is " + pkg.version + "; generating release " + releaseVersion );
-	version = rsemver.exec( pkg.version );
-	oldver = ( +version[ 1 ] ) * 10000 + ( +version[ 2 ] * 100 ) + ( +version[ 3 ] );
-	newver = ( +major ) * 10000 + ( +minor * 100 ) + ( +patch );
-	if ( newver < oldver ) {
-		die( "Next version is older than current version!" );
-	}
+    function migrateWarnProp( obj, prop, value, msg ) {
+        Object.defineProperty( obj, prop, {
+            configurable: true,
+            enumerable: true,
+            get: function() {
+                migrateWarn( msg );
+                return value;
+            }
+        } );
+    }
 
-	nextVersion = major + "." + minor + "." + ( isBeta ? patch : +patch + 1 ) + "-pre";
-	next();
-}
+    if ( document.compatMode === "BackCompat" ) {
 
-//TODO: Check that remote doesn't have newer commits:
-// git fetch repoURL
-// git remote show repoURL
-// (look for " BRANCH     pushes to BRANCH     (up to date)")
+        // JQuery has never supported or tested Quirks Mode
+        migrateWarn( "jQuery is not compatible with Quirks Mode" );
+    }
 
-function checkGitStatus( next ) {
-	child.execFile( "git", [ "status" ], function( error, stdout, stderr ) {
-		var onBranch = ( ( stdout || "" ).match( /On branch (\S+)/ ) || [] )[ 1 ];
-		if ( onBranch !== branch ) {
-			die( "Branches don't match: Wanted " + branch + ", got " + onBranch );
-		}
-		if ( /Changes to be committed/i.test( stdout ) ) {
-			die( "Please commit changed files before attemping to push a release." );
-		}
-		if ( /Changes not staged for commit/i.test( stdout ) ) {
-			die( "Please stash files before attempting to push a release." );
-		}
-		next();
-	} );
-}
 
-function tagReleaseVersion( next ) {
-	git( [ "commit", "-a", "--no-verify", "-m", "Tagging the " + releaseVersion + " release." ],
-		function() {
-			git( [ "tag", releaseVersion ], next );
-		}
-	);
-}
+    var oldInit = jQuery.fn.init,
+        oldIsNumeric = jQuery.isNumeric,
+        oldFind = jQuery.find,
+        rattrHashTest = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/,
+        rattrHashGlob = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/g;
 
-function updateVersions( next ) {
-	updateSourceVersion( releaseVersion );
-	updateReadmeVersion( releaseVersion );
-	updatePackageVersion( releaseVersion );
-	next();
-}
+    jQuery.fn.init = function( arg1 ) {
+        var args = Array.prototype.slice.call( arguments );
 
-function gruntBuild( next ) {
-	exec( gruntCmd, [], function( error, stdout ) {
-		if ( error ) {
-			die( error + stderr );
-		}
-		log( stdout || "(no output)" );
-		next();
-	} );
-}
+        if ( typeof arg1 === "string" && arg1 === "#" ) {
 
-function makeReleaseCopies( next ) {
-	finalFiles = {};
-	Object.keys( releaseFiles ).forEach( function( key ) {
-		var builtFile = releaseFiles[ key ],
-			releaseFile = key.replace( /VER/g, releaseVersion );
+            // JQuery( "#" ) is a bogus ID selector, but it returned an empty set before jQuery 3.0
+            migrateWarn( "jQuery( '#' ) is not a valid selector" );
+            args[ 0 ] = [];
+        }
 
-		copy( builtFile, releaseFile );
-		finalFiles[ releaseFile ] = builtFile;
-	} );
-	next();
-}
+        return oldInit.apply( this, args );
+    };
+    jQuery.fn.init.prototype = jQuery.fn;
 
-function publishToNPM( next ) {
+    jQuery.find = function( selector ) {
+        var args = Array.prototype.slice.call( arguments );
 
-	// Don't update "latest" if this is a beta
-	if ( isBeta ) {
-		exec( npmCmd, [ "publish", "--tag", "beta" ], next, skipRemote );
-	} else {
-		exec( npmCmd, [ "publish" ], next, skipRemote );
-	}
-}
+        // Support: PhantomJS 1.x
+        // String#match fails to match when used with a //g RegExp, only on some strings
+        if ( typeof selector === "string" && rattrHashTest.test( selector ) ) {
 
-function setNextVersion( next ) {
-	updateSourceVersion( nextVersion );
-	updatePackageVersion( nextVersion, "master" );
-	git( [ "commit", "-a", "--no-verify", "-m", "Updating the source version to " + nextVersion ],
-		next );
-}
+            // The nonstandard and undocumented unquoted-hash was removed in jQuery 1.12.0
+            // First see if qS thinks it's a valid selector, if so avoid a false positive
+            try {
+                document.querySelector( selector );
+            } catch ( err1 ) {
 
-function pushToRemote( next ) {
-	git( [ "push", "--tags", repoURL, branch ], next, skipRemote );
-}
+                // Didn't *look* valid to qSA, warn and try quoting what we think is the value
+                selector = selector.replace( rattrHashGlob, function( _, attr, op, value ) {
+                    return "[" + attr + op + "\"" + value + "\"]";
+                } );
 
-function remindAboutCDN( next ) {
-	console.log( chalk.red( "TODO: Update CDN with jquery-migrate." +
-		releaseVersion + " files (min and regular)" ) );
-	console.log( chalk.red( "  clone codeorigin.jquery.org, git add files, commit, push" ) );
-	next();
-}
+                // If the regexp *may* have created an invalid selector, don't update it
+                // Note that there may be false alarms if selector uses jQuery extensions
+                try {
+                    document.querySelector( selector );
+                    migrateWarn( "Attribute selector with '#' must be quoted: " + args[ 0 ] );
+                    args[ 0 ] = selector;
+                } catch ( err2 ) {
+                    migrateWarn( "Attribute selector with '#' was not fixed: " + args[ 0 ] );
+                }
+            }
+        }
 
-function remindAboutSites( next ) {
-	console.log( chalk.red( "TODO: Update jquery.com download page to " + releaseVersion ) );
-	next();
-}
+        return oldFind.apply( this, args );
+    };
 
-//==============================
+// Copy properties attached to original jQuery.find method (e.g. .attr, .isXML)
+    var findProp;
+    for ( findProp in oldFind ) {
+        if ( Object.prototype.hasOwnProperty.call( oldFind, findProp ) ) {
+            jQuery.find[ findProp ] = oldFind[ findProp ];
+        }
+    }
 
-function steps() {
-	var cur = 0,
-		steps = arguments;
-	( function next() {
-		process.nextTick( function() {
-			steps[ cur++ ]( next );
-		} );
-	} )();
-}
+// The number of elements contained in the matched element set
+    jQuery.fn.size = function() {
+        migrateWarn( "jQuery.fn.size() is deprecated; use the .length property" );
+        return this.length;
+    };
 
-function updatePackageVersion( ver, blobVer ) {
-	status( "Updating " + packageFile + " version to " + ver );
-	blobVer = blobVer || ver;
-	pkg.version = ver;
-	pkg.author.url = setBlobVersion( pkg.author.url, blobVer );
-	writeJsonSync( packageFile, pkg );
-}
+    jQuery.parseJSON = function() {
+        migrateWarn( "jQuery.parseJSON is deprecated; use JSON.parse" );
+        return JSON.parse.apply( null, arguments );
+    };
 
-function updateSourceVersion( ver ) {
-	var stmt = "\njQuery.migrateVersion = \"" + ver + "\";\n";
+    jQuery.isNumeric = function( val ) {
 
-	status( "Updating " + stmt.replace( /\n/g, "" ) );
-	if ( !dryrun ) {
-		fs.writeFileSync( versionFile, stmt );
-	}
-}
+        // The jQuery 2.2.3 implementation of isNumeric
+        function isNumeric2( obj ) {
+            var realStringObj = obj && obj.toString();
+            return !jQuery.isArray( obj ) && ( realStringObj - parseFloat( realStringObj ) + 1 ) >= 0;
+        }
 
-function updateReadmeVersion( ver ) {
-	var readme = fs.readFileSync( readmeFile, "utf8" );
+        var newValue = oldIsNumeric( val ),
+            oldValue = isNumeric2( val );
 
-	// Change version references from the old version to the new one.
-	// The regex can update beta versions in case it was changed manually.
-	if ( isBeta ) {
-		status( "Skipping " + readmeFile + " update (beta release)" );
-	} else {
-		status( "Updating " + readmeFile );
-		readme = readme
-			.replace( /jquery-migrate-\d+\.\d+\.\d+(?:-\w+)?/g, "jquery-migrate-" + releaseVersion );
-		if ( !dryrun ) {
-			fs.writeFileSync( readmeFile, readme );
-		}
-	}
-}
+        if ( newValue !== oldValue ) {
+            migrateWarn( "jQuery.isNumeric() should not be called on constructed objects" );
+        }
 
-function setBlobVersion( s, v ) {
-	return s.replace( /\/blob\/(?:(\d+\.\d+[^\/]+)|master)/, "/blob/" + v );
-}
+        return oldValue;
+    };
 
-function writeJsonSync( fname, json ) {
-	if ( dryrun ) {
-		console.log( JSON.stringify( json, null, "  " ) );
-	} else {
-		fs.writeFileSync( fname, JSON.stringify( json, null, "\t" ) + "\n" );
-	}
-}
+    migrateWarnProp( jQuery, "unique", jQuery.uniqueSort,
+        "jQuery.unique is deprecated, use jQuery.uniqueSort" );
 
-function copy( oldFile, newFile ) {
-	status( "Copying " + oldFile + " to " + newFile );
-	if ( !dryrun ) {
-		fs.writeFileSync( newFile, fs.readFileSync( oldFile, "utf8" ) );
-	}
-}
+// Now jQuery.expr.pseudos is the standard incantation
+    migrateWarnProp( jQuery.expr, "filters", jQuery.expr.pseudos,
+        "jQuery.expr.filters is now jQuery.expr.pseudos" );
+    migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos,
+        "jQuery.expr[\":\"] is now jQuery.expr.pseudos" );
 
-function git( args, fn, skip ) {
-	exec( "git", args, fn, skip );
-}
 
-function exec( cmd, args, fn, skip ) {
-	if ( dryrun || skip ) {
-		log( chalk.black.bgBlue( "# " + cmd + " " + args.join( " " ) ) );
-		fn();
-	} else {
-		log( chalk.green( cmd + " " + args.join( " " ) ) );
-		child.execFile( cmd, args, { env: process.env },
-			function( err, stdout, stderr ) {
-				if ( err ) {
-					die( stderr || stdout || err );
-				}
-				fn();
-			}
-		);
-	}
-}
+    var oldAjax = jQuery.ajax;
 
-function status( msg ) {
-	console.log( chalk.black.bgGreen( msg ) );
-}
+    jQuery.ajax = function( ) {
+        var jQXHR = oldAjax.apply( this, arguments );
 
-function log( msg ) {
-	console.log( msg );
-}
+        // Be sure we got a jQXHR (e.g., not sync)
+        if ( jQXHR.promise ) {
+            migrateWarnProp( jQXHR, "success", jQXHR.done,
+                "jQXHR.success is deprecated and removed" );
+            migrateWarnProp( jQXHR, "error", jQXHR.fail,
+                "jQXHR.error is deprecated and removed" );
+            migrateWarnProp( jQXHR, "complete", jQXHR.always,
+                "jQXHR.complete is deprecated and removed" );
+        }
 
-function die( msg ) {
-	console.error( chalk.red( "ERROR: " + msg ) );
-	process.exit( 1 );
-}
+        return jQXHR;
+    };
 
-function exit() {
-	process.exit( 0 );
-}
+
+    var oldRemoveAttr = jQuery.fn.removeAttr,
+        oldToggleClass = jQuery.fn.toggleClass,
+        rmatchNonSpace = /\S+/g;
+
+    jQuery.fn.removeAttr = function( name ) {
+        var self = this;
+
+        jQuery.each( name.match( rmatchNonSpace ), function( i, attr ) {
+            if ( jQuery.expr.match.bool.test( attr ) ) {
+                migrateWarn( "jQuery.fn.removeAttr no longer sets boolean properties: " + attr );
+                self.prop( attr, false );
+            }
+        } );
+
+        return oldRemoveAttr.apply( this, arguments );
+    };
+
+    jQuery.fn.toggleClass = function( state ) {
+
+        // Only deprecating no-args or single boolean arg
+        if ( state !== undefined && typeof state !== "boolean" ) {
+            return oldToggleClass.apply( this, arguments );
+        }
+
+        migrateWarn( "jQuery.fn.toggleClass( boolean ) is deprecated" );
+
+        // Toggle entire class name of each element
+        return this.each( function() {
+            var className = this.getAttribute && this.getAttribute( "class" ) || "";
+
+            if ( className ) {
+                jQuery.data( this, "__className__", className );
+            }
+
+            // If the element has a class name or if we're passed `false`,
+            // then remove the whole classname (if there was one, the above saved it).
+            // Otherwise bring back whatever was previously saved (if anything),
+            // falling back to the empty string if nothing was stored.
+            if ( this.setAttribute ) {
+                this.setAttribute( "class",
+                    className || state === false ?
+                        "" :
+                        jQuery.data( this, "__className__" ) || ""
+                );
+            }
+        } );
+    };
+
+
+    var internalSwapCall = false;
+
+// If this version of jQuery has .swap(), don't false-alarm on internal uses
+    if ( jQuery.swap ) {
+        jQuery.each( [ "height", "width", "reliableMarginRight" ], function( _, name ) {
+            var oldHook = jQuery.cssHooks[ name ] && jQuery.cssHooks[ name ].get;
+
+            if ( oldHook ) {
+                jQuery.cssHooks[ name ].get = function() {
+                    var ret;
+
+                    internalSwapCall = true;
+                    ret = oldHook.apply( this, arguments );
+                    internalSwapCall = false;
+                    return ret;
+                };
+            }
+        } );
+    }
+
+    jQuery.swap = function( elem, options, callback, args ) {
+        var ret, name,
+            old = {};
+
+        if ( !internalSwapCall ) {
+            migrateWarn( "jQuery.swap() is undocumented and deprecated" );
+        }
+
+        // Remember the old values, and insert the new ones
+        for ( name in options ) {
+            old[ name ] = elem.style[ name ];
+            elem.style[ name ] = options[ name ];
+        }
+
+        ret = callback.apply( elem, args || [] );
+
+        // Revert the old values
+        for ( name in options ) {
+            elem.style[ name ] = old[ name ];
+        }
+
+        return ret;
+    };
+
+    var oldData = jQuery.data;
+
+    jQuery.data = function( elem, name, value ) {
+        var curData;
+
+        // If the name is transformed, look for the un-transformed name in the data object
+        if ( name && name !== jQuery.camelCase( name ) ) {
+            curData = jQuery.hasData( elem ) && oldData.call( this, elem );
+            if ( curData && name in curData ) {
+                migrateWarn( "jQuery.data() always sets/gets camelCased names: " + name );
+                if ( arguments.length > 2 ) {
+                    curData[ name ] = value;
+                }
+                return curData[ name ];
+            }
+        }
+
+        return oldData.apply( this, arguments );
+    };
+
+    var oldTweenRun = jQuery.Tween.prototype.run;
+
+    jQuery.Tween.prototype.run = function( percent ) {
+        if ( jQuery.easing[ this.easing ].length > 1 ) {
+            migrateWarn(
+                "easing function " +
+                "\"jQuery.easing." + this.easing.toString() +
+                "\" should use only first argument"
+            );
+
+            jQuery.easing[ this.easing ] = jQuery.easing[ this.easing ].bind(
+                jQuery.easing,
+                percent, this.options.duration * percent, 0, 1, this.options.duration
+            );
+        }
+
+        oldTweenRun.apply( this, arguments );
+    };
+
+    var oldLoad = jQuery.fn.load,
+        originalFix = jQuery.event.fix;
+
+    jQuery.event.props = [];
+    jQuery.event.fixHooks = {};
+
+    jQuery.event.fix = function( originalEvent ) {
+        var event,
+            type = originalEvent.type,
+            fixHook = this.fixHooks[ type ],
+            props = jQuery.event.props;
+
+        if ( props.length ) {
+            migrateWarn( "jQuery.event.props are deprecated and removed: " + props.join() );
+            while ( props.length ) {
+                jQuery.event.addProp( props.pop() );
+            }
+        }
+
+        if ( fixHook && !fixHook._migrated_ ) {
+            fixHook._migrated_ = true;
+            migrateWarn( "jQuery.event.fixHooks are deprecated and removed: " + type );
+            if ( ( props = fixHook.props ) && props.length ) {
+                while ( props.length ) {
+                    jQuery.event.addProp( props.pop() );
+                }
+            }
+        }
+
+        event = originalFix.call( this, originalEvent );
+
+        return fixHook && fixHook.filter ? fixHook.filter( event, originalEvent ) : event;
+    };
+
+    jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
+
+        jQuery.fn[ name ] = function() {
+            var args = Array.prototype.slice.call( arguments, 0 );
+
+            // If this is an ajax load() the first arg should be the string URL;
+            // technically this could also be the "Anything" arg of the event .load()
+            // which just goes to show why this dumb signature has been deprecated!
+            // jQuery custom builds that exclude the Ajax module justifiably die here.
+            if ( name === "load" && typeof args[ 0 ] === "string" ) {
+                return oldLoad.apply( this, args );
+            }
+
+            migrateWarn( "jQuery.fn." + name + "() is deprecated" );
+
+            args.splice( 0, 0, name );
+            if ( arguments.length ) {
+                return this.on.apply( this, args );
+            }
+
+            // Use .triggerHandler here because:
+            // - load and unload events don't need to bubble, only applied to window or image
+            // - error event should not bubble to window, although it does pre-1.7
+            // See http://bugs.jquery.com/ticket/11820
+            this.triggerHandler.apply( this, args );
+            return this;
+        };
+
+    } );
+
+// Trigger "ready" event only once, on document ready
+    jQuery( function() {
+        jQuery( document ).triggerHandler( "ready" );
+    } );
+
+    jQuery.event.special.ready = {
+        setup: function() {
+            if ( this === document ) {
+                migrateWarn( "'ready' event is deprecated" );
+            }
+        }
+    };
+
+    jQuery.fn.extend( {
+
+        bind: function( types, data, fn ) {
+            migrateWarn( "jQuery.fn.bind() is deprecated" );
+            return this.on( types, null, data, fn );
+        },
+        unbind: function( types, fn ) {
+            migrateWarn( "jQuery.fn.unbind() is deprecated" );
+            return this.off( types, null, fn );
+        },
+        delegate: function( selector, types, data, fn ) {
+            migrateWarn( "jQuery.fn.delegate() is deprecated" );
+            return this.on( types, selector, data, fn );
+        },
+        undelegate: function( selector, types, fn ) {
+            migrateWarn( "jQuery.fn.undelegate() is deprecated" );
+            return arguments.length === 1 ?
+                this.off( selector, "**" ) :
+                this.off( types, selector || "**", fn );
+        }
+    } );
+
+
+    var oldOffset = jQuery.fn.offset;
+
+    jQuery.fn.offset = function() {
+        var docElem,
+            elem = this[ 0 ],
+            origin = { top: 0, left: 0 };
+
+        if ( !elem || !elem.nodeType ) {
+            migrateWarn( "jQuery.fn.offset() requires a valid DOM element" );
+            return origin;
+        }
+
+        docElem = ( elem.ownerDocument || document ).documentElement;
+        if ( !jQuery.contains( docElem, elem ) ) {
+            migrateWarn( "jQuery.fn.offset() requires an element connected to a document" );
+            return origin;
+        }
+
+        return oldOffset.apply( this, arguments );
+    };
+
+
+    var oldParam = jQuery.param;
+
+    jQuery.param = function( data, traditional ) {
+        var ajaxTraditional = jQuery.ajaxSettings && jQuery.ajaxSettings.traditional;
+
+        if ( traditional === undefined && ajaxTraditional ) {
+
+            migrateWarn( "jQuery.param() no longer uses jQuery.ajaxSettings.traditional" );
+            traditional = ajaxTraditional;
+        }
+
+        return oldParam.call( this, data, traditional );
+    };
+
+    var oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack;
+
+    jQuery.fn.andSelf = function() {
+        migrateWarn( "jQuery.fn.andSelf() replaced by jQuery.fn.addBack()" );
+        return oldSelf.apply( this, arguments );
+    };
+
+
+    var oldDeferred = jQuery.Deferred,
+        tuples = [
+
+            // Action, add listener, callbacks, .then handlers, final state
+            [ "resolve", "done", jQuery.Callbacks( "once memory" ),
+                jQuery.Callbacks( "once memory" ), "resolved" ],
+            [ "reject", "fail", jQuery.Callbacks( "once memory" ),
+                jQuery.Callbacks( "once memory" ), "rejected" ],
+            [ "notify", "progress", jQuery.Callbacks( "memory" ),
+                jQuery.Callbacks( "memory" ) ]
+        ];
+
+    jQuery.Deferred = function( func ) {
+        var deferred = oldDeferred(),
+            promise = deferred.promise();
+
+        deferred.pipe = promise.pipe = function( /* fnDone, fnFail, fnProgress */ ) {
+            var fns = arguments;
+
+            migrateWarn( "deferred.pipe() is deprecated" );
+
+            return jQuery.Deferred( function( newDefer ) {
+                jQuery.each( tuples, function( i, tuple ) {
+                    var fn = jQuery.isFunction( fns[ i ] ) && fns[ i ];
+
+                    // Deferred.done(function() { bind to newDefer or newDefer.resolve })
+                    // deferred.fail(function() { bind to newDefer or newDefer.reject })
+                    // deferred.progress(function() { bind to newDefer or newDefer.notify })
+                    deferred[ tuple[ 1 ] ]( function() {
+                        var returned = fn && fn.apply( this, arguments );
+                        if ( returned && jQuery.isFunction( returned.promise ) ) {
+                            returned.promise()
+                                .done( newDefer.resolve )
+                                .fail( newDefer.reject )
+                                .progress( newDefer.notify );
+                        } else {
+                            newDefer[ tuple[ 0 ] + "With" ](
+                                this === promise ? newDefer.promise() : this,
+                                fn ? [ returned ] : arguments
+                            );
+                        }
+                    } );
+                } );
+                fns = null;
+            } ).promise();
+
+        };
+
+        if ( func ) {
+            func.call( deferred, deferred );
+        }
+
+        return deferred;
+    };
+
+
+
+})( jQuery, window );

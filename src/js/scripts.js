@@ -11,7 +11,7 @@ jQuery(document).ready(function() {
     /*
         Background slideshow
     */
-    $('.top-content').backstretch("../img/backgrounds/1.jpg");
+    $('.top-content').backstretch("img/backgrounds/2.jpg");
 
     $('#top-navbar-1').on('shown.bs.collapse', function(){
     	$('.top-content').backstretch("resize");
@@ -23,6 +23,6 @@ jQuery(document).ready(function() {
     /*
         Wow
     */
-    new WOW().init();
+    //new WOW().init();
 
 });

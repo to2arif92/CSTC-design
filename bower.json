@@ -7,7 +7,8 @@
     "animate.css": "^3.5.2",
     "font-awesome": "fontawesome#^4.7.0",
     "jquery-backstretch": "^2.1.16",
-    "jquery-migrate-official": "^3.0.0"
+    "jquery-migrate": "jquery.migrate-newest#^3.0.0",
+    "waypoints": "^4.0.1"
   },
   "install": {
     "base": "src",
@@ -57,10 +58,10 @@
           }
         ]
       },
-      "jquery-migrate-official": {
+      "waypoints": {
         "mapping": [
           {
-            "bower-components/jquery-migrate-official/build/release.js": "jquery-migrate.js"
+            "bower-components/waypoints/lib/jquery.waypoints.js": "jquery.waypoints.js"
           }
         ]
       }
