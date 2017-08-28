@@ -30,10 +30,12 @@ $(document).ready(function () {
     $('.js-slick').slick({
         autoplay: true,
         autoplaySpeed: 10000,
+        arrows: false,
         dots: true,
         draggable: false,
         fade: true,
-        speed: 1000
+        speed: 1000,
+        touchMove: true
     });
 
     $('.js-slick').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
