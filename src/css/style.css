@@ -8,6 +8,9 @@ body {
     text-align: center;
 }
 
+.theme-default {background-color: rgba(31, 28, 39, 0.9)}
+.theme-alt { background-color: rgba(31, 28, 39, 0.1)}
+
 strong { font-weight: 500; }
 
 a, a:hover, a:focus {

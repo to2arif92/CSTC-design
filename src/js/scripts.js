@@ -35,6 +35,7 @@ $(document).ready(function () {
         draggable: false,
         fade: true,
         speed: 1000,
+        swipe: true,
         touchMove: true
     });
 
