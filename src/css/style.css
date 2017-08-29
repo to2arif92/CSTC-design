@@ -8,8 +8,13 @@ body {
     text-align: center;
 }
 
-.theme-default {background-color: rgba(31, 28, 39, 0.9)}
+/* Theme */
+
+.theme-default {background-color: rgba(1, 1, 3, 0.8)}
 .theme-alt { background-color: rgba(31, 28, 39, 0.1)}
+.footer { background-color: rgba(1, 1, 3, 1)}
+
+
 
 strong { font-weight: 500; }
 
