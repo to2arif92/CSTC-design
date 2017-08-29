@@ -10,8 +10,8 @@ body {
 
 /* Theme */
 
-.theme-default {background-color: rgba(1, 1, 3, 0.8)}
-.theme-alt { background-color: rgba(31, 28, 39, 0.1)}
+.theme-default {background-color: rgba(1, 1, 3, 0.1)}
+.theme-alt { background-color: rgba(1, 1, 3, 0.1)}
 .footer { background-color: rgba(1, 1, 3, 1)}
 
 
@@ -37,6 +37,10 @@ img { max-width: 100%; }
 
 
 /***** General style, all sections *****/
+
+
+.section, section {padding-top: 4em ; padding-bottom: 4em}
+
 
 .section-container { margin: 0 auto; padding-bottom: 80px; }
 .section-description { margin-top: 60px; padding-bottom: 10px; }
@@ -68,6 +72,11 @@ img { max-width: 100%; }
 .features-box { margin-top: 30px; text-align: left; }
 .features-box .features-box-icon { font-size: 60px; color: #df6482; line-height: 60px; text-align: center; }
 .features-box h3 { margin-top: 0; padding: 0 0 10px 0; }
+
+
+/* Contact Us */
+.contact-us .fa,
+.contact-us .glyphicon { font-size: 3em; color: rgba(1, 1, 3, .9)}
 
 
 /***** Footer *****/
