@@ -46,4 +46,10 @@ $(document).ready(function () {
     $('.js-slick').on('afterChange', function (event, slick, currentSlide, nextSlide) {
         $(slick.$slides.get(currentSlide)).addClass('is-animating');
     });
+
+
+
+    /* Contact Us - Social section*/
+    $('[data-toggle="tooltip"]').tooltip();
+
 });
