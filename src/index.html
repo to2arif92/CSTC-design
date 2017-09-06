@@ -317,7 +317,7 @@
     </div>-->
 
     <!-- Map Section -->
-    <div class="map-responsive">
+    <!--<div class="map-responsive">
         <iframe
             width="600"
             height="450"
@@ -329,7 +329,8 @@
             &center=23.7507,90.3733
             &zoom=13">
         </iframe>
-    </div>
+    </div>-->
+    <div id="map"></div>
 
     <div class="features-container section theme-alt">
         <div class="container">
@@ -417,7 +418,12 @@
     <script src="js/scripts.js"></script>
     <Script src="js/slick.js"></Script>
     <Script src="js/script.js"></Script>
-
+    <!-- Configure Map API -->
+    <script src="js/map.js"></script>
+    <!-- Integrate Map API -->
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd2QnNTMfzYaJfWtzhf2uWMeLZ9Yinof4&callback=initMap">
+    </script>
     <!--[if lt IE 10]>
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
