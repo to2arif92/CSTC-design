@@ -9,7 +9,8 @@
     "jquery-backstretch": "^2.1.16",
     "jquery-migrate": "jquery.migrate-newest#^3.0.0",
     "waypoints": "^4.0.1",
-    "slick-carousel": "slick.js#^1.7.1"
+    "slick-carousel": "slick.js#^1.7.1",
+    "wow": "^1.1.2"
   },
   "install": {
     "base": "src",

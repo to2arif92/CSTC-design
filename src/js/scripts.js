@@ -23,7 +23,7 @@ $(document).ready(function () {
     /*
         Wow
     */
-    //new WOW().init();
+    new WOW().init();
 
 
     // Slider --- Slick.js config
