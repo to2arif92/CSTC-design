@@ -36,18 +36,38 @@
 
 
 /***** Mega Navbar *****/
+.divider-vertical-left {
+    height: 2.8em;
+/*
+    margin: 0 9px;
 
-.mega-dropdown, .mega-dropdown > ul > li > a {
-  position: static !important;
-    color: white;
+    */
+    border-left: 1px solid #f2f2f2;
 }
-
+.divider-vertical-right {
+    height: 2.8em;
+    border-right: 1px solid #f2f2f2;
+}
+/* level-1 menu */
+.mega-dropdown {
+  position: static !important;
+}
+.mega-dropdown > ul > li > a:visited{
+    background: rgba(168, 168, 168, 1);
+}
+/* Background of Mega menu level-2 */
 .mega-dropdown > ul > li > .dropdown-menu {
-    color:#ffffff;
     background: rgba(66, 66, 66, 0.99);
 }
+/* Texts of Mega menu level-1 + its a + level-2 */
+.mega-dropdown-menu, .mega-dropdown > ul > li > a, .mega-dropdown > ul > li > .dropdown-menu > li > a {
+    color:#DBDBDB;
+}
+.mega-dropdown > ul > li > .dropdown-menu > li > a:hover {
+    color:#000;
+}
 
-.dropdown1{ color: aliceblue}
+/* Mega menu level-1 */
 .mega-dropdown-menu {
     padding: 20px 0px;
     width: 100%;
