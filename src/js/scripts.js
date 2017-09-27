@@ -4,9 +4,9 @@ $(document).ready(function () {
         Hide Navbar --- Waypoints.js config
     */
     // toggle "navbar-no-bg" class
-    $('.hide-nav').waypoint(function () {
+    /*$('.hide-nav').waypoint(function () {
         $('nav').toggleClass('navbar-no-bg');
-    });
+    });*/
 
     /*
         Background slideshow

@@ -9,9 +9,7 @@
     <title>CAD Solution & Training Center</title>
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400|Roboto:300,400,500">
-    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Acme|Anton|Bree+Serif|Fjalla+One" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Poppins|Acme|Anton|Bree+Serif" rel="stylesheet">
     <!-- CSS -->
     <!-- build:css -->
 
@@ -24,6 +22,7 @@
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/header-slider.css">
     <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/pre-loader.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -52,47 +51,6 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon.png">
     <meta name="theme-color" content="#ffffff">
-<style>
-.spinner-wrapper {
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background-color: rgba(98, 99, 103, 0.95);
-z-index: 999999;
-}
-.spinner {
-  width: 40px;
-  height: 40px;
-  background-color: rgba(25, 25, 27, 1);
-
-  position: absolute;
-top: 48%;
-left: 48%;
-  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
-  animation: sk-rotateplane 1.2s infinite ease-in-out;
-}
-
-@-webkit-keyframes sk-rotateplane {
-  0% { -webkit-transform: perspective(120px) }
-  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
-  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
-}
-
-@keyframes sk-rotateplane {
-  0% {
-    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
-  } 50% {
-    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
-  } 100% {
-    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-  }
-}
-</style>
 </head>
 
 <body>
@@ -149,7 +107,7 @@ left: 48%;
                 </ul>
             </div>-->
 <div id="navbar">
-  <nav class="navbar navbar-inverse">
+  <nav class="navbar navbar-inverse mega-nav">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
