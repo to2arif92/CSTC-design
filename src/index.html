@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="css/header-slider.css">
     <link rel="stylesheet" href="css/map.css">
     <link rel="stylesheet" href="css/pre-loader.css">
+    <link rel="stylesheet" href="css/jobs.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -410,16 +411,13 @@
     </div>
 
 <!--Jobs-->
-<div class="wrapper">
+<div class="wrapper theme-alt">
 
   <div class="header">
     <h1 class="header__title">Expanding Card Grid</h1>
     <h2 class="header__subtitle">with Flexbox</h2>
   </div>
-
-  <div class="cards">
-
-    <div class=" card [ is-collapsed ] ">
+<div class=" card [ is-collapsed ] ">
       <div class="card__inner [ js-expander ]">
         <span>Card</span>
         <i class="fa fa-folder-o"></i>
@@ -429,96 +427,25 @@
         Expander
       </div>
     </div>
-
-    <div class=" card [ is-collapsed ] ">
-      <div class="card__inner [ js-expander ]">
-        <span>Card</span>
-        <i class="fa fa-folder-o"></i>
-      </div>
-      <div class="card__expander">
-        <i class="fa fa-close [ js-collapser ]"></i>
-        Expander
-      </div>
+<div id="jobContainer"></div>
+<script type="text/template" id="tmplt-Movies">
+    <div id="jobList" class="cards">
     </div>
-
-    <div class=" card [ is-collapsed ] ">
-      <div class="card__inner [ js-expander ]">
-        <span>Card</span>
-        <i class="fa fa-folder-o"></i>
-      </div>
-      <div class="card__expander">
-        <i class="fa fa-close [ js-collapser ]"></i>
-        Expander
-      </div>
-    </div>
-
-    <div class=" card [ is-collapsed ] ">
-      <div class="card__inner [ js-expander ]">
-        <span>Card</span>
-        <i class="fa fa-folder-o"></i>
-      </div>
-      <div class="card__expander">
-        <i class="fa fa-close [ js-collapser ]"></i>
-        Expander
-      </div>
-    </div>
-
-    <div class=" card [ is-collapsed ] ">
-      <div class="card__inner [ js-expander ]">
-        <span>Card</span>
-        <i class="fa fa-folder-o"></i>
-      </div>
-      <div class="card__expander">
-        <i class="fa fa-close [ js-collapser ]"></i>
-        Expander
-      </div>
-    </div>
-
-    <div class=" card [ is-collapsed ] ">
-      <div class="card__inner [ js-expander ]">
-        <span>Card</span>
-        <i class="fa fa-folder-o"></i>
-      </div>
-      <div class="card__expander">
-        <i class="fa fa-close [ js-collapser ]"></i>
-        Expander
-      </div>
-    </div>
-
-    <div class=" card [ is-collapsed ] ">
-      <div class="card__inner [ js-expander ]">
-        <span>Card</span>
-        <i class="fa fa-folder-o"></i>
-      </div>
-      <div class="card__expander">
-        <i class="fa fa-close [ js-collapser ]"></i>
-        Expander
-      </div>
-    </div>
-
-    <div class=" card [ is-collapsed ] ">
-      <div class="card__inner [ js-expander ]">
-        <span>Card</span>
-        <i class="fa fa-folder-o"></i>
-      </div>
-      <div class="card__expander">
-        <i class="fa fa-close [ js-collapser ]"></i>
-        Expander
-      </div>
-    </div>
-
-    <div class=" card [ is-collapsed ] ">
-      <div class="card__inner [ js-expander ]">
-        <span>Card</span>
-        <i class="fa fa-folder-o"></i>
-      </div>
-      <div class="card__expander">
-        <i class="fa fa-close [ js-collapser ]"></i>
-        Expander
-      </div>
-    </div>
-
+</script>
+<script type="text/template" id="tmplt-Movie">
+  <div class="card__inner [ js-expander ]">
+    <div><%= Id %> </div>
+    <div><%= Name %> </div>
+    <i class="fa fa-folder-o"></i>
   </div>
+  <div class="card__expander">
+    <i class="fa fa-close [ js-collapser ]"></i>
+     <div><%= AverageRating %> </div>
+    <div><%= ReleaseYear %> </div>
+    <div><%= Url %> </div>
+    <div><%= Rating %> </div>
+  </div>
+</script>
 
 </div>
 
@@ -768,9 +695,12 @@
     <Script src="js/script.js"></Script>
     <!-- Configure Map API -->
     <script src="js/map.js"></script>
+    <!-- Backbone App -->
     <script src="js/underscore.js"></script>
     <script src="js/backbone.js"></script>
-    <script src="js/app.js"></script>
+    <!--<script src="js/app.js"></script>-->
+    <script src="js/jobs.js"></script>
+    <script src="js/app-jobs.js"></script>
     <!--[if lt IE 10]>
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
