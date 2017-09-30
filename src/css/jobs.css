@@ -33,16 +33,26 @@ body {
   line-height: 1.1;
 }*/
 
+/* Center align all cards, horizontally & vertically*/
+#jobList{
+    display: flex;
+    justify-content: center;
+}
 .cards {
-  padding: 15px;
+  /*padding: 15px;*/
   display: flex;
   flex-flow: row wrap;
 }
 
 .card {
   margin: .5em;
-  width: calc((100% / 3) - 30px);
+  width: calc((100% / 4) - 30px);
   transition: all 0.2s ease-in-out;
+}
+@media screen and (max-width: 1200px) {
+  .card {
+    width: calc((100% / 3) - 30px);
+  }
 }
 @media screen and (max-width: 991px) {
   .card {
@@ -55,19 +65,26 @@ body {
   }
 }
 .card:hover .card__inner {
-  background-color: #1abc9c;
+  background-color: #5F9AB8;
   transform: scale(1.05);
 }
 .card__inner {
   width: 100%;
+    /*height: calc((100%/2) - 10px);*/
+    min-height: 7.6em;
+    overflow-wrap: break-word;
+    display:table-cell
   padding: 30px;
   position: relative;
   cursor: pointer;
   background-color: #949fb0;
   color: #eceef1;
   font-size: 1.5em;
-  text-transform: uppercase;
-  text-align: center;
+  /*text-transform: uppercase;*/
+    /* Center Vertically*/
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
   transition: all 0.2s ease-in-out;
 }
 .card__inner:after {
@@ -85,7 +102,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   color: #eceef1;
   font-size: 1.5em;
 }
@@ -111,7 +128,7 @@ body {
   opacity: 0;
 }
 .card.is-expanded .card__inner {
-  background-color: #1abc9c;
+  background-color: #4D7C94;
 }
 .card.is-expanded .card__inner:after {
   content: "";
@@ -132,8 +149,10 @@ body {
 .card.is-expanded .card__expander {
   max-height: 1000px;
   min-height: 200px;
-  overflow: visible;
+  display: inline-block;
   margin-top: 30px;
+    padding: 1.2em;
+    text-align: left;
   opacity: 1;
 }
 .card.is-expanded:hover .card__inner {

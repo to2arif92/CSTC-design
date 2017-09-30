@@ -12,7 +12,7 @@ var Theater = {
 Theater.Models.Movie = Backbone.Model.extend({})
 Theater.Collections.Movies = Backbone.Collection.extend({
     model: Theater.Models.Movie,
-    url: "movies.json",
+    url: "data/jobs.json",
     initialize: function () {
         console.log("Movies initialize")
     }

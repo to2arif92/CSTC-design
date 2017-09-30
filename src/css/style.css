@@ -83,7 +83,7 @@ img { max-width: 100%; }
 /***** Features *****/
 
 .features-box { margin-top: 30px; text-align: left; }
-.features-box .features-box-icon { font-size: 60px; color: #6FD4EE; line-height: 60px; text-align: center; }
+.features-box .features-box-icon { font-size: 60px; color: #5F9AB8; line-height: 60px; text-align: center; }
 .features-box h3 { margin-top: 0; padding: 0 0 10px 0; }
 
 
@@ -95,6 +95,9 @@ img { max-width: 100%; }
 /***** Footer *****/
 
 footer { padding: 40px 0 45px 0; background: #f8f8f8; }
+footer .fa{
+    color: #5F9AB8;
+}
 
 .footer-copyright { padding-top: 15px; }
 .footer-copyright a { color: #888; border-bottom: 1px dotted #888; }
