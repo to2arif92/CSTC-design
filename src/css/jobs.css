@@ -73,7 +73,7 @@ body {
     /*height: calc((100%/2) - 10px);*/
     min-height: 7.6em;
     overflow-wrap: break-word;
-    display:table-cell
+    display:table-cell;
   padding: 30px;
   position: relative;
   cursor: pointer;

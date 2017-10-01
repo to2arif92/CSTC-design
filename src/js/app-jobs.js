@@ -2,28 +2,28 @@
 /// <reference path="../../scripts/libs/underscore.js" />
 /// <reference path="../../scripts/libs/backbone.js" />
 
-var Theater = {
+var App = {
     Models: {},
     Collections: {},
     Views: {},
     Templates: {}
 }
 
-Theater.Models.Movie = Backbone.Model.extend({})
-Theater.Collections.Movies = Backbone.Collection.extend({
-    model: Theater.Models.Movie,
+App.Models.Job = Backbone.Model.extend({})
+App.Collections.Jobs = Backbone.Collection.extend({
+    model: App.Models.Job,
     url: "data/jobs.json",
     initialize: function () {
-        console.log("Movies initialize")
+        console.log("Jobs from JSON initialize")
     }
 });
 
-Theater.Templates.movies = _.template($("#tmplt-Movies").html())
+App.Templates.jobs = _.template($("#tmplt-Jobs").html())
 
-Theater.Views.Movies = Backbone.View.extend({
+App.Views.Jobs = Backbone.View.extend({
     el: $("#jobContainer"),
-    template: Theater.Templates.movies,
-    //collection: new Theater.Collections.Movies(), //Not needed
+    template: App.Templates.jobs,
+    //collection: new App.Collections.Jobs(), //Not needed
 
     events: {
         'mouseenter .cards': 'expand',
@@ -58,7 +58,7 @@ Theater.Views.Movies = Backbone.View.extend({
 
     addOne: function (model) {
         console.log("addOne")
-        view = new Theater.Views.Movie({
+        view = new App.Views.Job({
             model: model
         });
         $("div#jobList", this.el).append(view.render());
@@ -67,11 +67,11 @@ Theater.Views.Movies = Backbone.View.extend({
 })
 
 
-Theater.Templates.movie = _.template($("#tmplt-Movie").html())
-Theater.Views.Movie = Backbone.View.extend({
+App.Templates.job = _.template($("#tmplt-Job").html())
+App.Views.Job = Backbone.View.extend({
     tagName: "div",
     className: " card [ is-collapsed ] ",
-    template: Theater.Templates.movie,
+    template: App.Templates.job,
     //events: { "click .delete": "test" },
 
     initialize: function () {
@@ -91,38 +91,38 @@ Theater.Views.Movie = Backbone.View.extend({
 })
 
 
-Theater.Router = Backbone.Router.extend({
+App.Router = Backbone.Router.extend({
     routes: {
-        "": "defaultRoute" //http://localhost:22257/Theater/theater.htm
+        "": "defaultRoute" //http://localhost:22257/App/theater.htm
     },
 
     defaultRoute: function () {
         console.log("defaultRoute");
-        Theater.movies = new Theater.Collections.Movies()
-        new Theater.Views.Movies({
-            collection: Theater.movies
+        App.jobs = new App.Collections.Jobs()
+        new App.Views.Jobs({
+            collection: App.jobs
         }); //Add this line
-        Theater.movies.fetch();
-        console.log(Theater.movies.length)
+        App.jobs.fetch();
+        console.log(App.jobs.length)
     }
 })
 
-var appRouter = new Theater.Router();
+var appRouter = new App.Router();
 Backbone.history.start();
 /*
 //This is a hack for demonstration  purposes
 $("#butAddItem").click(null, function () {
-    var movie = new Theater.Models.Movie(
+    var job = new App.Models.Job(
         {
             "Id": "BVP3s",
             "Name": "Lord of the Rings: The Return of the King: Extended Edition: Bonus Material",
             "AverageRating": 4.3,
             "ReleaseYear": 2003,
-            "Url": "http://www.netflix.com/Movie/Lord_of_the_Rings_The_Return_of_the_King_Extended_Edition_Bonus_Material/70024204",
+            "Url": "http://www.netflix.com/Job/Lord_of_the_Rings_The_Return_of_the_King_Extended_Edition_Bonus_Material/70024204",
             "Rating": "PG-13"
         }
     )
 
-    Theater.movies.add(movie);
-    console.log(Theater.movies.length)
+    App.jobs.add(job);
+    console.log(App.jobs.length)
 })*/

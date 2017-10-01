@@ -436,11 +436,11 @@
           </div>
         </div>-->
     <div id="jobContainer"></div>
-    <script type="text/template" id="tmplt-Movies">
+    <script type="text/template" id="tmplt-Jobs">
         <div id="jobList" class="cards">
         </div>
     </script>
-    <script type="text/template" id="tmplt-Movie">
+    <script type="text/template" id="tmplt-Job">
       <div class="card__inner [ js-expander ]">
         <div><%= cName %> </div>
         <div><%= jDesignation %> </div>
@@ -449,10 +449,18 @@
       <div class="card__expander">
         <i class="fa fa-close [ js-collapser ]"></i>
          <div>Job Description:
-            <p><%= jDescription %></p>
+            <p>
+            <ul>
+                <% for(var jInfo in jDescriptions) { %>
+                    <li>
+                        <%= jDescriptions[jInfo] %>
+                    </li>
+                <% } %>
+            </ul>
+            </p>
         </div>
         <div>Deadline: <%= deadline %> </div>
-        <div>More: <%= link %> </div>
+        <div>More: <a><%= link %></a> </div>
       </div>
     </script>
 
