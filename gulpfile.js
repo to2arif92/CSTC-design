@@ -14,6 +14,7 @@ var htmlmin = require('gulp-htmlmin');
 
 // Location Path
 var js = 'src/js/';
+var ignore = '!';
 
 // Concatenate(combine),  Minify & GZIP compress JS Files
 gulp.task('scripts', function () {
@@ -21,7 +22,10 @@ gulp.task('scripts', function () {
 		// added manually to keep the order intect i.e. jQuery>Bootstrap
 		js + 'jquery.js',
 		js + 'jquery-migrate.js',
-		js + '*.js'
+		js + '*.js',
+        ignore+ js + 'app-jobs.js',
+        ignore+ js + 'backbone.js',
+        ignore+ js + 'pre-loader.js'
     ])
         .pipe(concat('bundle.js'))
         .pipe(rename({
@@ -31,6 +35,17 @@ gulp.task('scripts', function () {
         //.pipe(gzip())
         .pipe(gulp.dest('build/js'));
 });
+
+// Copy concat excluded files
+gulp.task('copyJs', function () {
+    return gulp.src([
+        js + 'backbone.js',
+        js + 'app-jobs.js',
+        js + 'pre-loader.js'
+    ])
+        .pipe(gulp.dest('build/js'))
+});
+
 
 // Concatenate & Minify CSS Files
 gulp.task('styles', function () {
@@ -58,6 +73,12 @@ gulp.task('images', function () {
 gulp.task('fonts', function () {
     return gulp.src('src/fonts/**/*')
         .pipe(gulp.dest('build/fonts'))
+});
+
+// Copy JSON
+gulp.task('json', function () {
+    return gulp.src('src/data/**/*')
+        .pipe(gulp.dest('build/data'))
 });
 
 // Generate HTML file with Bundled JS/CSS paths & Minify
@@ -93,4 +114,4 @@ gulp.task('watch', function () {
 });
 
 // Default Task
-gulp.task('default', ['scripts', 'styles', 'images', 'fonts', 'html']);
+gulp.task('default', ['scripts', 'copyJs', 'styles', 'images', 'fonts', 'json', 'html']);
