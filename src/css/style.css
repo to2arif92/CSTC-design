@@ -125,7 +125,7 @@ footer .fa{
 @media (max-width: 767px) {
 	.section-description p { padding: 0; }
 
-	.top-content { padding: 40px 0 60px 0; }
+	/*.top-content { padding: 40px 0 60px 0; }*/
 
 	.features-box { text-align: center; }
 	.features-box h3 { margin-top: 5px; padding-top: 10px; }

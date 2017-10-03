@@ -81,7 +81,8 @@ body {
   padding: 30px;
   position: relative;
   cursor: pointer;
-  background-color: #949fb0;
+  background-color: #99A2B0;
+    /*opacity: .8;*/
   color: #eceef1;
   font-size: 1.5em;
   /*text-transform: uppercase;*/
