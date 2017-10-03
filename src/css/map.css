@@ -19,15 +19,30 @@
 /*  */
 
 #map {
-    height: 100%;
+    height: 25em;
+    margin-top: 4vw;
 }
 
 
 /* Optional: Makes the sample page fill the window. */
-
+/*
 html,
 body {
-    height: 65%;
+    height: 25em;
     margin: 0;
     padding: 0;
+}*/
+
+/* Upto this width ...*/
+@media (max-width: 768px){
+    #map {
+        height: 45vw;
+    }
+}
+
+/* After this width ...*/
+@media (max-width: 480px){
+    #map {
+        height: 55vw;
+    }
 }

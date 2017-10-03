@@ -296,7 +296,7 @@
 .photo {
     background-size: cover;
     background-position: center center;
-    min-height: 40em;
+    /*min-height: 40em;*/
     /*padding-bottom: 5%;*/
     will-change: transform;
 }
@@ -333,9 +333,49 @@
  * Wrapper
  */
 
-.wrapper {
+/*.wrapper {
     margin-right: auto;
     margin-left: auto;
     max-width: 45em;
     width: 90%;
+}*/
+
+
+/* Custom Settings */
+
+.top-content { padding: 23em 0 18em 0;}
+
+.top-content .text { color: #fff; }
+.top-content .text h1 { color: #fff; }
+
+.photo {
+    min-height: 450px;
+}
+/* Above 768px */
+@media screen and (min-width: 768px){
+
+}
+
+/* Above 1200px */
+@media screen and (min-width: 1200px){
+    .top-content {
+        padding: 26em 0 24em 0;
+    }
+/*    .js-slick{
+        height: 20em;
+    }*/
+}
+
+/* Upto 750px */
+@media screen and (max-width: 768px){
+    .top-content {
+        padding: 37vw 0 24vw 0;
+    }
+}
+
+/* Upto 480px */
+@media screen and (max-width: 480px){
+    .top-content {
+        padding: 55vw 0 20vw 0;
+    }
 }

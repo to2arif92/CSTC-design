@@ -3,56 +3,88 @@
         "cName": "Company A",
         "jDesignation": "X Engineer",
         "deadline": "xx xx 20xx",
-        "jDescription": "Something",
+        "jDescriptions": [
+            "Generating xx and something",
+            "Design yy and something",
+            "Work with zz and something"
+        ],
         "link": "http://www.xyz.com/jobs"
     },
     {
         "cName": "Company B",
         "jDesignation": "X Engineer",
         "deadline": "xx xx 20xx",
-        "jDescription": "Something",
+        "jDescriptions": [
+            "Generating xx and something",
+            "Design yy and something",
+            "Work with zz and something"
+        ],
         "link": "http://www.xyz.com/jobs"
     },
     {
         "cName": "Company C",
         "jDesignation": "X Engineer",
         "deadline": "xx xx 20xx",
-        "jDescription": "Something",
+        "jDescriptions": [
+            "Generating xx and something",
+            "Design yy and something",
+            "Work with zz and something"
+        ],
         "link": "http://www.xyz.com/jobs"
     },
     {
         "cName": "Company D",
         "jDesignation": "X Engineer",
         "deadline": "xx xx 20xx",
-        "jDescription": "Something",
+        "jDescriptions": [
+            "Generating xx and something",
+            "Design yy and something",
+            "Work with zz and something"
+        ],
         "link": "http://www.xyz.com/jobs"
     },
     {
         "cName": "Company E",
         "jDesignation": "X Engineer",
         "deadline": "xx xx 20xx",
-        "jDescription": "Something",
+        "jDescriptions": [
+            "Generating xx and something",
+            "Design yy and something",
+            "Work with zz and something"
+        ],
         "link": "http://www.xyz.com/jobs"
     },
     {
         "cName": "Company F",
         "jDesignation": "X Engineer",
         "deadline": "xx xx 20xx",
-        "jDescription": "Something",
+        "jDescriptions": [
+            "Generating xx and something",
+            "Design yy and something",
+            "Work with zz and something"
+        ],
         "link": "http://www.xyz.com/jobs"
     },
     {
         "cName": "Company G",
         "jDesignation": "X Engineer",
         "deadline": "xx xx 20xx",
-        "jDescription": "Something",
+        "jDescriptions": [
+            "Generating xx and something",
+            "Design yy and something",
+            "Work with zz and something"
+        ],
         "link": "http://www.xyz.com/jobs"
     },
     {
         "cName": "Company H",
         "jDesignation": "X Engineer",
         "deadline": "xx xx 20xx",
-        "jDescription": "Something",
+        "jDescriptions": [
+            "Generating xx and something",
+            "Design yy and something",
+            "Work with zz and something"
+        ],
         "link": "http://www.xyz.com/jobs"
     }
 ]
