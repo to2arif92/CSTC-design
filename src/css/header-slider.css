@@ -378,6 +378,6 @@
 /* Upto 480px */
 @media screen and (max-width: 480px){
     .top-content {
-        padding: 55vw 0 20vw 0;
+        padding: 50vw 0 25vw 0;
     }
 }

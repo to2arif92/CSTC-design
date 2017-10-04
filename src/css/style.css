@@ -94,6 +94,8 @@ img { max-width: 100%; }
 .contact-us .fa,
 .contact-us .glyphicon { font-size: 3em; color: rgba(1, 1, 3, .9)}
 
+.contact-us a { color: #888888; }
+.contact-us a:hover { color: #99B9CA; }
 
 /***** Footer *****/
 
@@ -101,6 +103,10 @@ footer { padding: 40px 0 45px 0; background: #f8f8f8; }
 footer .fa{
     color: #5F9AB8;
     font-size: 1.3em;
+}
+footer .fa:hover {
+    color: #99B9CA;
+    font-size: 1.5em;
 }
 
 .footer-copyright { padding-top: 15px; }
@@ -132,9 +138,30 @@ footer .fa{
 
 }
 
-@media (max-width: 415px) {
+/* upto width 480px */
+@media (max-width: 480px) {
 
-	h1, h2 { font-size: 36px; }
+	h1, h2 { font-size: 2.5em; }
+    h3 { font-size: 1.8em; }
+
+    .features-box .fa {
+        font-size: .7em;
+    }
+
+    .contact-us h4{
+        font-size: 1.1em;
+    }
+    .contact-us p, .contact-us a{
+        font-size: 1em;
+    }
+
+    .contact-us .fa, .contact-us .glyphicon {
+        font-size: 2em;
+    }
+
+    .footer .fa { font-size: 1em}
+    .footer-copyright { font-size: .9em}
+
 
 }
 

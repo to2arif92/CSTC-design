@@ -152,9 +152,10 @@ body {
   border-bottom: 15px solid #333a45;
 }
 
-/* folder open icon */
+/* Icon .. after expanded
+before is defined in html */
 .card.is-expanded .card__inner .fa:before {
-  content: "\f115";
+  content: "\f077";
 }
 .card.is-expanded .card__expander {
   max-height: 1000px;
