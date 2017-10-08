@@ -1,0 +1,105 @@
+/* Theme Start */
+
+/* General */
+.theme-default {background-color: rgba(247, 247, 247, 1)}
+.theme-default h2, .theme-default h3 { color: rgb(85, 85, 85); }
+.theme-default h4 { color: rgb(130, 130, 130); }
+.theme-default a, .theme-default p {color: rgb(136, 136, 136)}
+.theme-default a:hover, .theme-default p:hover {color: rgb(58, 58, 58);}
+
+/* Specific */
+
+/* Level-00 */
+.navbar { background: rgba(58, 58, 58, 1); }
+
+/* Mega menu level-1 */
+/*.mega-dropdown-menu {
+    background: rgba(61, 61, 61, 0.99);
+}*/
+/* Level-1 text*/
+.mega-dropdown > a {
+    color: #F2F2F2 !important;
+}
+/* Background of Mega menu level-2 */
+.mega-dropdown-menu, .mega-dropdown > ul > li > .dropdown-menu {
+    background: rgba(61, 60, 60, 0.9);
+}
+.mega-dropdown > a:hover, .mega-dropdown > ul > li > a:hover{
+    color: rgb(113, 165, 192) !important;
+    background: rgba(42, 42, 42, 0);
+}
+/*.mega-dropdown > ul > li:{
+    background-color: yellow;
+    color: aqua;
+}*/
+/* Items: Mega menu level-2 */
+.mega-dropdown-menu > li > ul > li > a {
+    /*color: #222;*/
+  /*background: rgba(61, 61, 61, 0.69);*/
+}
+.mega-dropdown-menu > li > ul > li > a:hover {
+    /*color: #222;*/
+  background: rgba(113, 165, 192, 1);
+}
+/* Texts of Mega menu level-1 + its a + level-2 */
+.mega-dropdown-menu, .mega-dropdown > ul > li > a, .mega-dropdown > ul > li > .dropdown-menu > li > a {
+    color:#DBDBDB;
+}
+.mega-dropdown > ul > li > .dropdown-menu > li > a:hover {
+    color:#000;
+    font-size: 1.2em;
+}
+
+
+
+.features-box .features-box-icon, .features-box h3 { color: rgb(96, 154, 184); }
+.features-box h3{ color: rgba(58, 58, 58, 1); text-shadow: 0 0 1px rgb(149, 187, 208); }
+.features-box .features-box-icon:hover, .features-box h3:hover{
+    color: rgb(1, 1, 1); text-shadow: 1px 1px rgb(92, 92, 92);
+}
+
+.contact-us .fa, .contact-us .glyphicon{ color: rgb(25, 25, 27); }
+.contact-us .fa:hover, .contact-us .glyphicon:hover{
+    color: rgba(58, 58, 58, 1); text-shadow: 0 0 3px rgb(149, 187, 208);
+}
+.contact-us h4:hover{ color: #555555 }
+/*255, 97, 84*/
+
+/* Card color before extended */
+.card__inner {
+    background-color: #99A2B0;
+    font-weight: 400;
+    color: rgba(20, 22, 20, .7);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+/* Card color after being extended */
+.card.is-expanded .card__inner:first-of-type {
+  background-color: #4D7C94;
+    color: aliceblue;
+    box-shadow: inset 0 0 2px #000;
+}
+/* Card hover */
+.card:hover .card__inner {
+  background-color: rgb(96, 154, 184);
+    color: aliceblue;
+
+    box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.4), 0 20px 20px 0 rgba(0, 0, 0, 0.39);
+}
+/* Expended view of a card */
+.card__expander {
+  background-color: #333a45;
+}
+.card__expander, .card__expander a, .card__expander a:hover{
+    color: #eceef1;
+}
+
+
+.footer { background-color: rgba(1, 1, 3, 1)}
+footer .fa{
+    color: #5F9AB8;
+}
+footer .fa:hover {
+    color: #99B9CA;
+}
+
+/* Theme End */

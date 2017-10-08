@@ -69,7 +69,7 @@ body {
   }
 }
 .card:hover .card__inner {
-  background-color: #5F9AB8;
+  /*background-color: #5F9AB8;*/
   transform: scale(1.05);
 }
 .card__inner {
@@ -81,9 +81,13 @@ body {
   padding: 30px;
   position: relative;
   cursor: pointer;
-  background-color: #99A2B0;
-    /*opacity: .8;*/
+  /* defined in style.css for centralised themeing
+    background-color: #99A2B0;
   color: #eceef1;
+
+    */
+
+    /*opacity: .8;*/
   font-size: 1.5em;
   /*text-transform: uppercase;*/
     /* Center Vertically*/
@@ -104,14 +108,14 @@ body {
 /* Expander */
 .card__expander {
   transition: all 0.2s ease-in-out;
-  background-color: #333a45;
+  /*background-color: #333a45;*/
   width: 100%;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   /*text-transform: uppercase;*/
-  color: #eceef1;
+  /*color: #eceef1;*/
   font-size: 1.5em;
 }
 .card__expander .fa {
@@ -135,9 +139,9 @@ body {
   margin-top: 0;
   opacity: 0;
 }
-.card.is-expanded .card__inner {
+/*.card.is-expanded .card__inner {
   background-color: #4D7C94;
-}
+}*/
 .card.is-expanded .card__inner:after {
   content: "";
   opacity: 1;
