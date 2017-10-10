@@ -7,7 +7,9 @@ $(document).ready(function () {
     /*$('.hide-nav').waypoint(function () {
         $('nav').toggleClass('navbar-no-bg');
     });*/
-
+    $('.hide-nav').waypoint(function () {
+        $('nav').toggleClass('nav-shadow');
+    });
     /*
         Background slideshow
     */

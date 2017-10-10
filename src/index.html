@@ -9,7 +9,7 @@
     <title>CAD Solution & Training Center</title>
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400|Roboto:300,400,500">
-    <link href="https://fonts.googleapis.com/css?family=Poppins|Acme|Anton|Bree+Serif" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins|Acme|Anton|Marvel" rel="stylesheet">
     <!-- CSS -->
     <!-- build:css -->
 
@@ -55,7 +55,7 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 
-<body>
+<body class=" theme-default">
     <!--CSS Spinner-->
     <div class="spinner-wrapper">
         <div class="spinner"></div>
@@ -110,7 +110,7 @@
                 </ul>
             </div>-->
 <div id="navbar">
-  <nav class="navbar navbar-inverse mega-nav">
+  <div class="navbar navbar-inverse mega-nav">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -232,7 +232,7 @@
 
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
-</nav>
+</div>
 </div>
         </div>
 <!--        <div class="container">
@@ -295,7 +295,7 @@
     </div>
 
     <!-- Features -->
-    <div class="section-container theme-default hide-nav">
+    <div class="section-container hide-nav">
         <div class="container">
 
             <div class="row">
@@ -413,7 +413,7 @@
     </div>
 
 <!--Jobs-->
-<div class="section-container theme-default">
+<div class="section-container">
     <div class="container">
     <div class="row">
         <div class="col-sm-12 features section-description wow fadeIn">
@@ -450,19 +450,16 @@
       </div>
       <div class="card__expander">
         <i class="fa fa-close [ js-collapser ]"></i>
-         <div>Job Description:
-            <p>
-            <ul>
-                <% for(var jInfo in jDescriptions) { %>
-                    <li>
-                        <%= jDescriptions[jInfo] %>
-                    </li>
-                <% } %>
-            </ul>
-            </p>
-        </div>
-        <div>Deadline: <%= deadline %> </div>
-        <div>More: <a><%= link %></a> </div>
+        <div>Job Description:</div>
+        <ul class="j-infoes">
+            <% for(var jInfo in jDescriptions) { %>
+                <li>
+                    <%= jDescriptions[jInfo] %>
+                </li>
+            <% } %>
+        </ul>
+        <div>Deadline:<span> <%= deadline %> </span></div>
+        <div>More:<span> <a><%= link %></a> </span></div>
       </div>
     </script>
 
@@ -501,7 +498,7 @@
 
 
     <!-- About Us -->
-    <div class="section-container theme-default">
+    <div class="section-container">
         <div class="container">
 
             <div class="row">

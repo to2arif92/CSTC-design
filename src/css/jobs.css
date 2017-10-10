@@ -117,6 +117,13 @@ body {
   /*text-transform: uppercase;*/
   /*color: #eceef1;*/
   font-size: 1.5em;
+    font-weight: 500;
+}
+.card__expander .j-infoes, .card__expander span{
+    font-weight: 100;
+}
+.card__expander li{
+    /*font-size: 1em;*/
 }
 .card__expander .fa {
   font-size: 0.75em;
