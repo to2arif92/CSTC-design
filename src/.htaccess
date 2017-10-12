@@ -1,0 +1,24 @@
+AddEncoding gzip .jgz
+# Use UTF-8 encoding for anything served text/plain or text/html
+AddDefaultCharset utf-8
+RewriteCond %{HTTP:Accept-encoding} gzip
+# RewriteCond %{HTTP_USER_AGENT} !Safari
+RewriteCond %{HTTP_USER_AGENT} !Konqueror
+RewriteCond %{REQUEST_FILENAME}.jgz -f
+RewriteRule ^(.*)$ $1.jgz [QSA,L]
+
+<IfModule mod_headers.c>
+    Header append Vary User-Agent
+    <FilesMatch .*\.js.jgz$>
+    ForceType text/javascript
+    Header append Vary Accept-Encoding
+    Header set Content-Encoding: gzip
+    Header set Cache-control: private
+    </FilesMatch>
+    <FilesMatch .*\.css.jgz$>
+    ForceType text/css
+    Header append Vary Accept-Encoding  
+    Header set Content-Encoding: gzip
+    Header set Cache-control: private
+    </FilesMatch>
+</IfModule>

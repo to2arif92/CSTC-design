@@ -6,7 +6,10 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var gzip = require('gulp-gzip');
 var rename = require('gulp-rename');
-var cssnano = require('gulp-cssnano');
+var uncss = require('gulp-uncss');
+/*var cssnano = require('gulp-cssnano');*/
+var cleanCSS = require('gulp-clean-css');
+var autoprefixer = require('gulp-autoprefixer');
 var imagemin = require('gulp-imagemin');
 var cache = require('gulp-cache');
 var htmlreplace = require('gulp-html-replace');
@@ -32,7 +35,9 @@ gulp.task('scripts', function () {
             suffix: '.min'
         }))
         .pipe(uglify())
-        //.pipe(gzip())
+        /*.pipe(gzip({
+            extension: 'jgz'
+        }))*/
         .pipe(gulp.dest('build/js'));
 });
 
@@ -47,14 +52,33 @@ gulp.task('copyJs', function () {
 });
 
 
-// Concatenate & Minify CSS Files
+// Concatenate , add browser Prefix & Minify CSS Files
 gulp.task('styles', function () {
     return gulp.src('src/css/**/*.css')
         .pipe(concat('styles.css'))
         .pipe(rename({
             suffix: '.min'
         }))
-        .pipe(cssnano())
+		// .pipe(uncss({
+            // html: ['src/index.html']
+        // }))
+		.pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
+        /*.pipe(cssnano()) // in fevor of clean css*/
+        .pipe(cleanCSS({
+          level: {
+			1: {
+			  all: true,
+			  normalizeUrls: false,
+			  specialComments: false
+			},
+			2: {
+			  restructureRules: true
+			}
+		  }
+        }))
         .pipe(gulp.dest('build/css'));
 });
 
