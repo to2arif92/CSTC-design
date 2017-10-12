@@ -12,10 +12,10 @@
 
 .navbar-brand {
 	height: 100%;
-  padding: 1.9em;
+  padding: 0em;
   /*width: 2em;*/
-	background: url(../img/logo.png) /*left */center / contain no-repeat;
-	text-indent: -99999px;
+	/*background: url(../img/logo.png) left center / contain no-repeat;*/
+	/*text-indent: -99999px;*/
 }
 
 /***** Brand Text *****/
@@ -223,9 +223,9 @@
 }
 /* Between 768px - 1400px */
 @media screen and (min-width: 768px) and (max-width: 1400px){
-    .navbar-brand {
+    /*.navbar-brand {
       padding-top: 1em;
-    }
+    }*/
 }
 
 /* Above 1200px*/
@@ -236,10 +236,10 @@
 }
 /* Upto 750px */
 @media screen and (max-width: 768px){
-    .navbar-brand {
+    /*.navbar-brand {
       padding: 1.3em;
-        margin-top: 0.2vw;;
-    }
+        margin-top: 0.2vw;
+    }*/
 
     .navbar-brand-label{
         font-size: 1.3em;

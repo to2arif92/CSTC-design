@@ -38,7 +38,8 @@ $(document).ready(function () {
         fade: true,
         speed: 1000,
         swipe: true,
-        touchMove: true
+        touchMove: true,
+        adaptiveHeight: true
     });
 
     $('.js-slick').on('beforeChange', function (event, slick, currentSlide, nextSlide) {

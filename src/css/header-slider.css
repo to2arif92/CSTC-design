@@ -298,8 +298,8 @@
 .photo {
     background-size: cover;
     background-position: center center;
-    /*min-height: 40em;*/
-    /*padding-bottom: 5%;*/
+    /*min-height: 32vw;
+    padding-bottom: -5%;*/
     will-change: transform;
 }
 
@@ -350,9 +350,7 @@
 .top-content .text { color: #fff; }
 .top-content .text h1 { color: #fff; }
 
-.photo {
-    min-height: 450px;
-}
+
 /* Above 768px */
 @media screen and (min-width: 768px){
 
@@ -377,6 +375,10 @@
 
 /* Upto 480px */
 @media screen and (max-width: 480px){
+    /*.photo {
+
+    margin-bottom: -25vw;
+    }*/
     .top-content {
         padding: 50vw 0 25vw 0;
     }
