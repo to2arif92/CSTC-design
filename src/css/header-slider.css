@@ -298,14 +298,15 @@
 .photo {
     background-size: cover;
     background-position: center center;
-    /*min-height: 32vw;
-    padding-bottom: -5%;*/
+    min-height: 32vw;
+    /*padding-bottom: -5%;
+    margin-bottom: -4%;*/
     will-change: transform;
 }
-
+/*
 .photo.is-animating {
     animation: scale 10s ease-in-out forwards;
-}
+}*/
 
 .photo:before {
     content: "";
@@ -358,9 +359,19 @@
 
 /* Above 1200px */
 @media screen and (min-width: 1200px){
-    .top-content {
+ /*   .top-content {
         padding: 26em 0 24em 0;
-    }
+        height: 55em;
+        margin-top: 7em;
+        margin-bottom: -6em;
+    }*/
+/*    .photo {
+    min-height: 32vw;
+        margin-top: 7em;
+    padding-bottom: -5%;
+    margin-bottom: -4%;
+    will-change: transform;
+}*/
 /*    .js-slick{
         height: 20em;
     }*/

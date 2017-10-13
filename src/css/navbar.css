@@ -194,8 +194,39 @@
 
 }*/
 
+@media (max-width: 768px) {
+/* Display level-1 submenu on Hover */
+    /*ul.nav li:hover > ul.dropdown-menu {
+        display: flow-root;
+    }*/
+    ul.mega-dropdown-menu >li{
+        position: relative;
+        display: flow-root;
+/*        display: flex;
+        justify-content: center;*/
+    }
+    ul.mega-dropdown-menu >li:hover > ul.dropdown-menu{
+        /*background-color: #2D2D2D;*/
+        display: inline-block;
+    }
+    /* ul.mega-dropdown-menu >li:hover > ul.dropdown-menu{
+        background-color: yellow;
+        display: inline-block;
+    }*/
+
+    /* Commnet out below part to not show elements without hover*/
+    ul.mega-dropdown-menu >li > ul.dropdown-menu {
+        position: absolute;
+        z-index: 1;
+        display: inline-block;
+    }
+    ul.mega-dropdown-menu >li > ul.dropdown-menu:only-of-type{
+        background: #2D2D2D;
+        opacity: .8;
+    }
+}
 @media (min-width: 768px) {
-/* Display submenu on Hover */
+/* Display level-1 submenu on Hover */
   ul.nav li:hover > ul.dropdown-menu {
     display: block;
   }
