@@ -303,10 +303,10 @@
     margin-bottom: -4%;*/
     will-change: transform;
 }
-/*
+
 .photo.is-animating {
     animation: scale 10s ease-in-out forwards;
-}*/
+}
 
 .photo:before {
     content: "";
