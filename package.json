@@ -13,8 +13,11 @@
   "author": "ArIF",
   "license": "ISC",
   "dependencies": {
+    "bower": "^1.8.8",
+    "bower-installer": "^1.3.6",
     "jquery": "^3.5.1",
-    "natives": "^1.1.6"
+    "natives": "^1.1.6",
+    "npm-check-updates": "^7.0.1"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

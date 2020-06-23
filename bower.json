@@ -2,17 +2,17 @@
   "name": "cstc",
   "version": "0.0.2",
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "jquery": "^3.2.1",
-    "animate.css": "^3.5.2",
+    "bootstrap": "^4.5.0",
+    "jquery": "^3.5.1",
+    "animate.css": "^4.1.0",
     "font-awesome": "fontawesome#^4.7.0",
-    "jquery-backstretch": "^2.1.16",
+    "jquery-backstretch": "^2.1.18",
     "jquery-migrate": "jquery.migrate-newest#^3.0.0",
     "waypoints": "^4.0.1",
     "slick-carousel": "slick.js#^1.7.1",
     "wow": "^1.1.2",
-    "backbone": "0.5.3",
-    "underscore": "^1.8.3"
+    "backbone": "1.4.0",
+    "underscore": "^1.10.2"
   },
   "install": {
     "base": "src",
