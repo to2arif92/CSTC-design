@@ -9,7 +9,8 @@
   "author": "ArIF",
   "license": "ISC",
   "dependencies": {
-    "jquery": "^3.2.1"
+    "jquery": "^3.5.1",
+    "natives": "^1.1.6"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -17,9 +18,9 @@
     "gulp-cached": "^1.1.1",
     "gulp-clean-css": "^3.9.0",
     "gulp-concat": "^2.6.1",
-    "gulp-cssnano": "^2.1.2",
+    "gulp-cssnano": "^2.1.3",
     "gulp-csso": "^3.0.0",
-    "gulp-gzip": "^1.4.0",
+    "gulp-gzip": "^1.4.2",
     "gulp-html-replace": "^1.6.2",
     "gulp-htmlmin": "^3.0.0",
     "gulp-imagemin": "^3.3.0",
